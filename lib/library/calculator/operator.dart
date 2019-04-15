@@ -4,10 +4,27 @@ import 'tokenizer.dart';
 
 abstract class Operator {
 
+  String provideSymbol();
+
+  int providePriority();
+
+  Token excute();
+}
+
+abstract class Bracket extends Operator {
+
+  @override
+  Token excute() {
+
+  }
+}
+
+abstract class InfixOperator extends Operator {
+
   Token leftOperand;
   Token rightOperand;
 
-  Operator(Token leftOperand, Token rightOperand) {
+  InfixOperator(Token leftOperand, Token rightOperand) {
     this.leftOperand = leftOperand;
     this.rightOperand = rightOperand;
   }
@@ -15,10 +32,6 @@ abstract class Operator {
   String getSymbol() {
     return provideSymbol();
   }
-
-  String provideSymbol();
-
-  int providePriority();
 
   num getLeftNum() {
     return num.tryParse(leftOperand.getValue());
@@ -35,7 +48,35 @@ abstract class Operator {
   num calculate(num leftNumber, num rightNumber);
 }
 
-class Plus extends Operator {
+class LeftParentheses extends Bracket {
+
+  @override
+  String provideSymbol() {
+    return "(";
+  }
+
+  @override
+  int providePriority() {
+    return 1;
+  }
+
+}
+
+class RightParentheses extends Bracket {
+
+  @override
+  String provideSymbol() {
+    return ")";
+  }
+
+  @override
+  int providePriority() {
+    return 1;
+  }
+
+}
+
+class Plus extends InfixOperator {
 
   Plus(Token leftOperand, Token rightOperand) : super(leftOperand, rightOperand);
 
@@ -60,7 +101,7 @@ class Plus extends Operator {
   }
 }
 
-class Minus extends Operator {
+class Minus extends InfixOperator {
 
   Minus(Token leftOperand, Token rightOperand) : super(leftOperand, rightOperand);
 
@@ -84,7 +125,7 @@ class Minus extends Operator {
   }
 }
 
-class Multiply extends Operator {
+class Multiply extends InfixOperator {
 
   Multiply(Token leftOperand, Token rightOperand) : super(leftOperand, rightOperand);
 
@@ -108,7 +149,7 @@ class Multiply extends Operator {
   }
 }
 
-class Divide extends Operator {
+class Divide extends InfixOperator {
 
   Divide(Token leftOperand, Token rightOperand) : super(leftOperand, rightOperand);
 
