@@ -5,116 +5,81 @@ import 'package:solocoding2019_base/library/calculator/tokenizer.dart';
 
 void main() {
 
-  test('Plus operator test', testPlusOperator);
+  test('Plus operator', testPlusOperator);
 
-  test('Minus operator test', testMinusOperator);
+  test('Minus operator', testMinusOperator);
 
-  test('Multiply operator test', testMultiplyOperator);
+  test('Multiply operator', testMultiplyOperator);
 
-  test('Divide operator test', testDivideOperator);
+  test('Divide operator', testDivideOperator);
 
 }
 
 testPlusOperator() {
-  expect(
-      Plus(generateNumberToken("0"), generateNumberToken("0"))
-          .excute()
-          .getValue(), "0");
-  expect(
-      Plus(generateNumberToken("1"), generateNumberToken("2"))
-          .excute()
-          .getValue(), "3");
+  expect(plus("0", "0"), "0");
+  expect(plus("1", "2"), "3");
+  expect(plus("-1", "-2"), "-3");
+  expect(plus("0.1", "0.2"), "0.3");
+  expect(plus("0.00001", "0.00002"), "0.00003");
+  expect(plus("1000000000", "1"), "1000000001");
+  expect(plus("1000000000000", "1"), "1000000000001");
+}
 
-  expect(
-      Plus(generateNumberToken("-1"), generateNumberToken("-2"))
-          .excute()
-          .getValue(), "-3");
-  expect(
-      Plus(generateNumberToken("0.1"), generateNumberToken("0.2"))
-          .excute()
-          .getValue(), "0.3");
-  expect(
-      Plus(generateNumberToken("0.00001"), generateNumberToken("0.00002"))
-          .excute()
-          .getValue(), "0.00003");
+String plus(String leftOperand, String rightOperand) {
+  return Plus(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
+      .excute()
+      .getValue();
 }
 
 testMinusOperator() {
-  expect(
-      Minus(generateNumberToken("0"), generateNumberToken("0"))
-          .excute()
-          .getValue(), "0");
-  expect(
-      Minus(generateNumberToken("1"), generateNumberToken("2"))
-          .excute()
-          .getValue(), "-1");
+  expect(minus("0", "0"), "0");
+  expect(minus("1", "2"), "-1");
+  expect(minus("1", "-2"), "3");
+  expect(minus("-0.1", "0.2"), "-0.3");
+  expect(minus("-0.00001", "0.00002"), "-0.00003");
+  expect(minus("1000000001", "1"), "1000000000");
+  expect(minus("1000000000001", "1"), "1000000000000");
+}
 
-  expect(
-      Minus(generateNumberToken("-1"), generateNumberToken("-2"))
-          .excute()
-          .getValue(), "1");
-  expect(
-      Minus(generateNumberToken("-0.1"), generateNumberToken("0.2"))
-          .excute()
-          .getValue(), "-0.3");
-  expect(
-      Minus(generateNumberToken("-0.00001"), generateNumberToken("0.00002"))
-          .excute()
-          .getValue(), "-0.00003");
+String minus(String leftOperand, String rightOperand) {
+  return Minus(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
+      .excute()
+      .getValue();
 }
 
 testMultiplyOperator() {
-  expect(
-      Multiply(generateNumberToken("0"), generateNumberToken("0"))
-        .excute()
-        .getValue(), "0");
-  expect(
-      Multiply(generateNumberToken("1"), generateNumberToken("2"))
-        .excute()
-        .getValue(), "2");
-  expect(
-      Multiply(generateNumberToken("-1"), generateNumberToken("-2"))
-        .excute()
-        .getValue(), "2");
-  expect(
-      Multiply(generateNumberToken("-1"), generateNumberToken("2"))
-          .excute()
-          .getValue(), "-2");
-  expect(
-      Multiply(generateNumberToken("0.1"), generateNumberToken("0.2"))
-          .excute()
-          .getValue(), "0.02");
-  expect(
-      Multiply(generateNumberToken("0.00001"), generateNumberToken("3"))
-          .excute()
-          .getValue(), "0.00003");
+  expect(multiply("0", "0"), "0");
+  expect(multiply("1", "2"), "2");
+  expect(multiply("-1", "-2"), "2");
+  expect(multiply("-1", "2"), "-2");
+  expect(multiply("0.1", "0.2"), "0.02");
+  expect(multiply("0.00001", "3"), "0.00003");
+  expect(multiply("10000000000", "3"), "30000000000");
+  expect(multiply("1000000000000", "3"), "3000000000000");
+}
+
+String multiply(String leftOperand, String rightOperand) {
+  return Multiply(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
+      .excute()
+      .getValue();
 }
 
 testDivideOperator() {
-  expect(
-      Divide(generateNumberToken("0"), generateNumberToken("0"))
-          .excute()
-          .getValue(), "NaN");
-  expect(
-      Divide(generateNumberToken("1"), generateNumberToken("2"))
-          .excute()
-          .getValue(), "0.5");
-  expect(
-      Divide(generateNumberToken("-1"), generateNumberToken("-2"))
-          .excute()
-          .getValue(), "0.5");
-  expect(
-      Divide(generateNumberToken("-1"), generateNumberToken("2"))
-          .excute()
-          .getValue(), "-0.5");
-  expect(
-      Divide(generateNumberToken("0.1"), generateNumberToken("0.1"))
-          .excute()
-          .getValue(), "1");
-  expect(
-      Divide(generateNumberToken("0.0001"), generateNumberToken("2"))
-          .excute()
-          .getValue(), "0.00005");
+  expect(divide("0", "0"), "NaN");
+  expect(divide("1", "2"), "0.5");
+  expect(divide("-1", "-2"), "0.5");
+  expect(divide("-1", "2"), "-0.5");
+  expect(divide("0.1", "0.1"), "1");
+  expect(divide("0.0001", "2"), "0.00005");
+  expect(divide("9999999999", "9"), "1111111111");
+  expect(divide("100000000000", "100"), "1000000000");
+
+}
+
+String divide(String leftOperand, String rightOperand) {
+  return Divide(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
+      .excute()
+      .getValue();
 }
 
 

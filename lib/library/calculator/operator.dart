@@ -42,7 +42,7 @@ abstract class InfixOperator extends Operator {
   }
 
   Token excute() {
-    return Token(TOKEN_TYPE.NUMBER, (calculate(getLeftNum(), getRightNum()).toStringAsPrecision(5)));
+    return Token(TOKEN_TYPE.NUMBER, (calculate(getLeftNum(), getRightNum()).toStringAsFixed(5)));
   }
 
   num calculate(num leftNumber, num rightNumber);
