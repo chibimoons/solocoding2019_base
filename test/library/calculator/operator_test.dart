@@ -4,15 +4,10 @@ import 'package:solocoding2019_base/library/calculator/tokenizer.dart';
 
 
 void main() {
-
   test('Plus operator', testPlusOperator);
-
   test('Minus operator', testMinusOperator);
-
   test('Multiply operator', testMultiplyOperator);
-
   test('Divide operator', testDivideOperator);
-
 }
 
 testPlusOperator() {
@@ -26,8 +21,8 @@ testPlusOperator() {
 }
 
 String plus(String leftOperand, String rightOperand) {
-  return Plus(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
-      .excute()
+  return Plus()
+      .excute(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
       .getValue();
 }
 
@@ -42,8 +37,8 @@ testMinusOperator() {
 }
 
 String minus(String leftOperand, String rightOperand) {
-  return Minus(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
-      .excute()
+  return Minus()
+      .excute(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
       .getValue();
 }
 
@@ -59,8 +54,8 @@ testMultiplyOperator() {
 }
 
 String multiply(String leftOperand, String rightOperand) {
-  return Multiply(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
-      .excute()
+  return Multiply()
+      .excute(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
       .getValue();
 }
 
@@ -77,11 +72,10 @@ testDivideOperator() {
 }
 
 String divide(String leftOperand, String rightOperand) {
-  return Divide(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
-      .excute()
+  return Divide()
+      .excute(generateNumberToken(leftOperand), generateNumberToken(rightOperand))
       .getValue();
 }
-
 
 Token generateNumberToken(String number) {
   return Token(TOKEN_TYPE.NUMBER, number);

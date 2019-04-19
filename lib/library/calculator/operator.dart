@@ -1,84 +1,90 @@
 import 'exception.dart';
 import 'tokenizer.dart';
 
+const OperatorMetaData LEFT_PARENTHESES = OperatorMetaData("(", 1);
+const OperatorMetaData RIGHT_PARENTHESES = OperatorMetaData(")", 1);
+const OperatorMetaData MULTIPLY = OperatorMetaData("*", 3);
+const OperatorMetaData DIVIDE = OperatorMetaData("/", 3);
+const OperatorMetaData PLUS = OperatorMetaData("+", 4);
+const OperatorMetaData MINUS = OperatorMetaData("-", 4);
+
+
+const List<Operator> OPERATORS = [
+  const LeftParentheses(),
+  const RightParentheses(),
+  const Plus(),
+  const Minus(),
+  const Multiply(),
+  const Divide()
+];
+
+class OperatorMetaData {
+
+  final String symbol;
+  final int priority;
+
+  const OperatorMetaData(this.symbol, this.priority);
+}
 
 abstract class Operator {
 
-  String provideSymbol();
+  const Operator();
 
-  int providePriority();
+  OperatorMetaData provideOperatorMetaData();
 
-  Token excute();
-}
+  String getSymbol() {
+    return provideOperatorMetaData().symbol;
+  }
 
-abstract class Bracket extends Operator {
-
-  @override
-  Token excute() {
-
+  int getPriority() {
+    return provideOperatorMetaData().priority;
   }
 }
 
 abstract class InfixOperator extends Operator {
 
-  Token leftOperand;
-  Token rightOperand;
+  const InfixOperator() : super();
 
-  InfixOperator(Token leftOperand, Token rightOperand) {
-    this.leftOperand = leftOperand;
-    this.rightOperand = rightOperand;
+  num converTokenToNum(Token token) {
+    return num.tryParse(token.getValue());
   }
 
-  String getSymbol() {
-    return provideSymbol();
+  Token excute(Token leftOperand, Token rightOperand) {
+    return convertNumToToken(calculate(converTokenToNum(leftOperand), converTokenToNum(rightOperand)));
   }
 
-  num getLeftNum() {
-    return num.tryParse(leftOperand.getValue());
-  }
-
-  num getRightNum() {
-    return num.tryParse(rightOperand.getValue());
-  }
-
-  Token excute() {
-    return Token(TOKEN_TYPE.NUMBER, (calculate(getLeftNum(), getRightNum()).toStringAsFixed(5)));
+  Token convertNumToToken(num number) {
+    return Token(TOKEN_TYPE.NUMBER, number.toStringAsFixed(5));
   }
 
   num calculate(num leftNumber, num rightNumber);
 }
 
-class LeftParentheses extends Bracket {
+class LeftParentheses extends Operator {
+
+  const LeftParentheses(): super();
 
   @override
-  String provideSymbol() {
-    return "(";
-  }
-
-  @override
-  int providePriority() {
-    return 1;
+  OperatorMetaData provideOperatorMetaData() {
+    return LEFT_PARENTHESES;
   }
 
 }
 
-class RightParentheses extends Bracket {
+class RightParentheses extends Operator {
+
+  const RightParentheses(): super();
 
   @override
-  String provideSymbol() {
-    return ")";
-  }
-
-  @override
-  int providePriority() {
-    return 1;
+  OperatorMetaData provideOperatorMetaData() {
+    return RIGHT_PARENTHESES;
   }
 
 }
 
 class Plus extends InfixOperator {
 
-  Plus(Token leftOperand, Token rightOperand) : super(leftOperand, rightOperand);
+  const Plus() : super();
 
   @override
   num calculate(num leftNumber, num rightNumber) {
@@ -91,19 +97,15 @@ class Plus extends InfixOperator {
   }
 
   @override
-  String provideSymbol() {
-    return "+";
+  OperatorMetaData provideOperatorMetaData() {
+    return PLUS;
   }
 
-  @override
-  int providePriority() {
-    return 4;
-  }
 }
 
 class Minus extends InfixOperator {
 
-  Minus(Token leftOperand, Token rightOperand) : super(leftOperand, rightOperand);
+  const Minus() : super();
 
   @override
   num calculate(num leftNumber, num rightNumber) {
@@ -115,19 +117,15 @@ class Minus extends InfixOperator {
   }
 
   @override
-  String provideSymbol() {
-    return "=";
+  OperatorMetaData provideOperatorMetaData() {
+    return MINUS;
   }
 
-  @override
-  int providePriority() {
-    return 4;
-  }
 }
 
 class Multiply extends InfixOperator {
 
-  Multiply(Token leftOperand, Token rightOperand) : super(leftOperand, rightOperand);
+  const Multiply() : super();
 
   @override
   num calculate(num leftNumber, num rightNumber) {
@@ -139,19 +137,15 @@ class Multiply extends InfixOperator {
   }
 
   @override
-  String provideSymbol() {
-    return "*";
+  OperatorMetaData provideOperatorMetaData() {
+    return MULTIPLY;
   }
 
-  @override
-  int providePriority() {
-    return 3;
-  }
 }
 
 class Divide extends InfixOperator {
 
-  Divide(Token leftOperand, Token rightOperand) : super(leftOperand, rightOperand);
+  const Divide() : super();
 
   @override
   num calculate(num leftNumber, num rightNumber) {
@@ -163,12 +157,8 @@ class Divide extends InfixOperator {
   }
 
   @override
-  String provideSymbol() {
-    return "/";
+  OperatorMetaData provideOperatorMetaData() {
+    return DIVIDE;
   }
 
-  @override
-  int providePriority() {
-    return 3;
-  }
 }

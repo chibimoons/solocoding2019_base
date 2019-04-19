@@ -19,6 +19,10 @@ class Stack<E> {
     return queue.isEmpty;
   }
 
+  int size() {
+    return queue.length;
+  }
+
   void clear() {
     queue.clear();
   }
